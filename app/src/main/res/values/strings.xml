@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Movies App</string>
+
+    <string name="text_search_movie">Search Movie</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="empty_state_message">Not Found</string>
+    <string name="home_page_link">Home Page</string>
+</resources>
