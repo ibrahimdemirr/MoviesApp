@@ -10,7 +10,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-
 class RetrofitFactory {
 
     private val interceptor = run {
@@ -36,7 +35,7 @@ class RetrofitFactory {
         return makeRetrofitService.getMoviesList(api_key, query, page)
     }
 
-    fun getMovieDetail(id: Int?,api_key: String?): Single<MovieDetailResponse> {
+    fun getMovieDetail(id: Int?, api_key: String?): Single<MovieDetailResponse> {
         return makeRetrofitService.getMovieDetail(id, api_key)
     }
 }

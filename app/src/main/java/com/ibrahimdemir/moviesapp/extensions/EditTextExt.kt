@@ -4,7 +4,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 
-
 fun EditText.clear() {
     text.clear()
 }
