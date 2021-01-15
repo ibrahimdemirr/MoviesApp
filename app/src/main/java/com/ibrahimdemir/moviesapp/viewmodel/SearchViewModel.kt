@@ -17,7 +17,7 @@ class SearchViewModel : BaseViewModel() {
     val dataSuccess = MutableLiveData<Boolean>()
     val dataLoading = MutableLiveData<Boolean>()
     val dataError = MutableLiveData<Boolean>()
-
+    var errorMessage: String? = null
 
     fun fetchMoviesList(query: String) {
         dataLoading.value = true
@@ -38,6 +38,7 @@ class SearchViewModel : BaseViewModel() {
                         dataSuccess.value = false
                         dataLoading.value = false
                         dataError.value = true
+                        errorMessage = e.toString()
                     }
                 })
         )

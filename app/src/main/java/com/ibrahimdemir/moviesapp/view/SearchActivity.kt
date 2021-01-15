@@ -98,7 +98,10 @@ class SearchActivity : BaseActivity() {
             it?.let {
                 if (it) {
                     hideProgressBar()
-                    Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "${searchViewModel.errorMessage}", Toast.LENGTH_LONG)
+                        .show()
+                    val v = currentFocus
+                    v?.hideKeyboard()
                 }
             }
         })
