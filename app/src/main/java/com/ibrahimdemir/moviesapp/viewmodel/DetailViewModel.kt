@@ -21,7 +21,7 @@ class DetailViewModel : BaseViewModel() {
     fun fetchMovieDetail(id: Int?) {
         dataLoading.value = true
 
-        disposable.add(
+        compositeDisposable.add(
             dataService.getMovieDetail(id, ApiConstants.API_KEY)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

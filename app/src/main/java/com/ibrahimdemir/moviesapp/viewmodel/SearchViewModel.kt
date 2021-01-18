@@ -22,7 +22,7 @@ class SearchViewModel : BaseViewModel() {
     fun fetchMoviesList(query: String) {
         dataLoading.value = true
 
-        disposable.add(
+        compositeDisposable.add(
             dataService.getMoviesList(API_KEY, query, 1)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

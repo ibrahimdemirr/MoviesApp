@@ -5,5 +5,10 @@ import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseViewModel : ViewModel() {
 
-    open var disposable = CompositeDisposable()
+    open var compositeDisposable = CompositeDisposable()
+
+    override fun onCleared() {
+        compositeDisposable.clear()
+        super.onCleared()
+    }
 }
