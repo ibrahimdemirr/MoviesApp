@@ -19,11 +19,11 @@ class SearchViewModel : BaseViewModel() {
     val dataError = MutableLiveData<Boolean>()
     var errorMessage: String? = null
 
-    fun fetchMoviesList(query: String, pageSize: Int?) {
+    fun fetchMoviesList(query: String) {
         dataLoading.value = true
 
         compositeDisposable.add(
-            dataService.getMoviesList(API_KEY, query, pageSize)
+            dataService.getMoviesList(API_KEY, query, 1)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<MovieSearchResponse>() {

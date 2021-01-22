@@ -9,7 +9,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ibrahimdemir.moviesapp.R
 import com.ibrahimdemir.moviesapp.adapter.RecyclerViewAdapter
 import com.ibrahimdemir.moviesapp.base.BaseActivity
@@ -21,9 +20,6 @@ import kotlinx.android.synthetic.main.custom_toolbar.view.*
 class SearchActivity : BaseActivity() {
 
     private lateinit var searchViewModel: SearchViewModel
-    private var currentPage = 1
-    private var totalPages = 1
-    private var query: String? = null
 
     override fun getLayoutId(): Int = R.layout.activity_search
 
@@ -32,29 +28,6 @@ class SearchActivity : BaseActivity() {
         setToolbar()
         manageSearchView()
         observeLiveData()
-    }
-
-    private val recyclerViewOnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            val visibleItemCount = moviesRecyclerView.childCount
-            val totalItemCount = moviesRecyclerView.layoutManager?.itemCount ?: 0
-            val firstVisibleItemPosition =
-                (moviesRecyclerView.layoutManager as GridLayoutManager).findFirstVisibleItemPosition()
-
-            if (searchViewModel.dataLoading.value == false) {
-                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-                    val nextPage = currentPage + 1
-                    if (nextPage > totalPages) {
-                        return
-                    } else {
-                        showProgressBar()
-                        searchViewModel.fetchMoviesList(query ?: "", currentPage)
-                        currentPage++
-                    }
-                }
-            }
-        }
     }
 
     private fun initViewModel() {
@@ -74,9 +47,7 @@ class SearchActivity : BaseActivity() {
             if (!TextUtils.isEmpty(s)) {
                 cancelImageView.show()
                 if (s != null && s.length > 2) {
-                    searchViewModel.fetchMoviesList(s.toString(), currentPage)
-                    query = s.toString()
-                    currentPage++
+                    searchViewModel.fetchMoviesList(s.toString())
                 }
             } else {
                 cancelImageView.hide()
@@ -110,12 +81,9 @@ class SearchActivity : BaseActivity() {
                                 show()
                                 layoutManager = GridLayoutManager(this@SearchActivity, 3)
                                 adapter = RecyclerViewAdapter(apiResponse, this@SearchActivity)
-                                addOnScrollListener(recyclerViewOnScrollListener)
                             }
-                            totalPages = apiResponse.total_pages ?: 0
                         }
                         if (apiResponse.total_pages == 0 || apiResponse.total_results == 0) {
-                            moviesRecyclerView.hide()
                             emptyStateLayout.show()
                             emptyStateLayout.findViewById<TextView>(R.id.emptyTextView).text =
                                 "${moviesSearchView.findViewById<EditText>(R.id.editTextSearchBox).text} could not be found"

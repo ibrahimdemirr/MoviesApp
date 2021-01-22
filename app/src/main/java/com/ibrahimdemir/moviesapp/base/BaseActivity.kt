@@ -14,6 +14,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private var blockingPane: Dialog? = null
 
+    private var blockingOperationCount = 0
+
     protected abstract fun getLayoutId(): Int
 
     protected abstract fun initView()
@@ -43,19 +45,25 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun showProgressBar() {
-        if (blockingPane == null) {
-            blockingPane = createProgressDialog()
-        }
+        if (blockingOperationCount == 0) {
+            if (blockingPane == null) {
+                blockingPane = createProgressDialog()
+            }
 
-        blockingPane?.let {
-            if (!it.isShowing) {
-                it.show()
+            blockingPane?.let {
+                if (!it.isShowing) {
+                    it.show()
+                }
             }
         }
+        blockingOperationCount += 1
     }
 
     fun hideProgressBar() {
-        blockingPane?.dismiss()
-        blockingPane = null
+        blockingOperationCount -= 1
+        if (blockingOperationCount == 0) {
+            blockingPane?.dismiss()
+            blockingPane = null
+        }
     }
 }
